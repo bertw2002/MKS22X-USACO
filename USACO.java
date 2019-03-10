@@ -70,10 +70,12 @@ public class USACO{
       int M = Integer.parseInt(scanner.next());
       int T = Integer.parseInt(scanner.next());
       //initialize pasture.
+      String nextline = scanner.nextLine();
       String[][] pasture =  new String[N][M];
       for (int x = 0; x < pasture.length; x++){
+        nextline = scanner.nextLine();
         for (int y = 0; y < pasture[0].length; y++){
-          pasture[x][y] = scanner.next();
+          pasture[x][y] = nextline.substring(y, y + 1);
         }
       }
       //instructions.
@@ -125,12 +127,17 @@ public class USACO{
     catch(FileNotFoundException e) {System.out.println("bad filename");return -100000;}
   }
   public static void main(String[] args) {
-       System.out.println("Bronze\n");
-       System.out.println(USACO.bronze("test1.txt"));
-       System.out.println("should be 342144\n");
-       System.out.println(USACO.bronze("test2.txt"));
-       System.out.println("should be 102762432\n");
-       }
+   System.out.println("Bronze\n");
+   System.out.println(USACO.bronze("test1.txt"));
+   System.out.println("should be 342144\n");
+   System.out.println(USACO.bronze("test2.txt"));
+   System.out.println("should be 102762432\n");
+   System.out.println("Silver\n");
+   System.out.println(USACO.silver("silvertest1.txt"));
+   System.out.println("answer is 1\n");
+   System.out.println(USACO.silver("silvertest2.txt"));
+   System.out.println("answer is 74\n");
+  }
 
 
 }
