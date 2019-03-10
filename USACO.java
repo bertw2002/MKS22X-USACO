@@ -61,6 +61,16 @@ public class USACO{
     catch(FileNotFoundException e){System.out.println("bad filename");return -100000;}
   }
 
+
+
+  //helper for silver making old and new arrays equal
+  private static void setEqual(int[][] first, int[][] second){
+    for (int x = 0; x < first.length; x++) {
+      for (int y = 0; y < first[0].length; y++) {
+        second[x][y] = first[x][y];
+      }
+    }
+  }
   public static int silver(String filename){
     try{
       //set up local variables
@@ -72,9 +82,9 @@ public class USACO{
       //initialize pasture.
       String nextline = scanner.nextLine();
       String[][] pasture =  new String[N][M];
-      for (int x = 0; x < pasture.length; x++){
+      for (int x = 0; x < N; x++){
         nextline = scanner.nextLine();
-        for (int y = 0; y < pasture[0].length; y++){
+        for (int y = 0; y < M; y++){
           pasture[x][y] = nextline.substring(y, y + 1);
         }
       }
@@ -85,47 +95,60 @@ public class USACO{
       }
       //do instructions.
       int[][] newpasture = new int[N][M];
-      for (int x = 0; x < pasture.length; x++){
-        for (int y = 0; y < pasture[0].length; y++){
+      int[][] oldpasture = new int[N][M];
+      for (int x = 0; x < N; x++){
+        for (int y = 0; y < M; y++){
           if (pasture[x][y].equals("*")){
             newpasture[x][y] = -1;
+            oldpasture[x][y] = -1;
           }else{
             newpasture[x][y] = 0;
+            oldpasture[x][y] = 0;
           }
         }
       }
-      newpasture[instr[0]][instr[1]] = 1;
-
+      //testing purposes
+      /*
+      for (int x = 0; x < N; x++){
+        for (int y = 0; y < M; y++){
+          System.out.print(newpasture[x][y]);
+        }
+        System.out.println();
+      }*/
+      newpasture[instr[0] - 1][instr[1] - 1] = 1;
       for (int time = 0; time < T; time++){
-        for (int x = 0; x < newpasture.length; x++) {
-          for (int y = 0; y < newpasture[x].length; y++) {
+        setEqual(newpasture, oldpasture);
+        
+        for (int x = 0; x < N; x++) {
+          for (int y = 0; y < M; y++) {
+
             if (newpasture[x][y] != -1) {
               newpasture[x][y] = 0;
 
-              if (y + 1 < newpasture[x].length && newpasture[x][y + 1] >= 0) {
-                newpasture[x][y] += newpasture[x][y + 1];
+              if (y + 1 < M && newpasture[x][y + 1] >= 0) {
+                newpasture[x][y] += oldpasture[x][y + 1];
               }
 
               if (y - 1 >= 0 && newpasture[x][y - 1] >= 0) {
-                newpasture[x][y] += newpasture[x][y - 1];
+                newpasture[x][y] += oldpasture[x][y - 1];
               }
 
               if (x - 1 >= 0 && newpasture[x - 1][y] >= 0) {
-                newpasture[x][y] += newpasture[x - 1][y];
+                newpasture[x][y] += oldpasture[x - 1][y];
               }
 
-              if (x + 1 < newpasture.length && newpasture[x + 1][y] >= 0) {
-                newpasture[x][y] += newpasture[x + 1][y];
+              if (x + 1 < N && newpasture[x + 1][y] >= 0) {
+                newpasture[x][y] += oldpasture[x + 1][y];
               }
-
             }
           }
         }
       }
-      return newpasture[instr[2]][instr[3]];
+      return newpasture[instr[2] - 1][instr[3] - 1];
     }
     catch(FileNotFoundException e) {System.out.println("bad filename");return -100000;}
   }
+
   public static void main(String[] args) {
    System.out.println("Bronze\n");
    System.out.println(USACO.bronze("test1.txt"));
